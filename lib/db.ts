@@ -1,4 +1,4 @@
-import { Database } from "bun:sqlite";
+import { Database, type SQLQueryBindings } from "bun:sqlite";
 import { join } from "path";
 
 const DB_PATH = join(process.cwd(), "data", "app.db");
@@ -94,19 +94,19 @@ function initializeTables(database: Database): void {
 }
 
 // Query helpers
-export function query<T>(sql: string, params?: unknown[]): T[] {
+export function query<T>(sql: string, params?: SQLQueryBindings[]): T[] {
   const database = getDb();
   const stmt = database.prepare(sql);
   return (params ? stmt.all(...params) : stmt.all()) as T[];
 }
 
-export function get<T>(sql: string, params?: unknown[]): T | undefined {
+export function get<T>(sql: string, params?: SQLQueryBindings[]): T | undefined {
   const database = getDb();
   const stmt = database.prepare(sql);
   return (params ? stmt.get(...params) : stmt.get()) as T | undefined;
 }
 
-export function run(sql: string, params?: unknown[]): void {
+export function run(sql: string, params?: SQLQueryBindings[]): void {
   const database = getDb();
   const stmt = database.prepare(sql);
   if (params) {
