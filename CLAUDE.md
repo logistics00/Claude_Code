@@ -4,7 +4,7 @@ We’re building the app described in @Specification_Technical.md. Read that fil
 architectural tasks or to double-check the exact database structure, tech stack or application architecture.
 
 Keep your replies extremely concise and focus on conveying the key information. No unnecessary fluff, 
-no long code snippets.
+claudeno long code snippets.
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
