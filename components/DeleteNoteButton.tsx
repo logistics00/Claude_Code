@@ -40,7 +40,7 @@ export function DeleteNoteButton({ deleteAction }: DeleteNoteButtonProps) {
       </button>
       <dialog
         ref={dialogRef}
-        className="rounded-lg p-0 backdrop:bg-black/50 dark:bg-gray-800"
+        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 rounded-lg p-0 backdrop:bg-black/50 bg-white dark:bg-gray-800"
       >
         <div className="p-6 max-w-sm">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
@@ -59,7 +59,7 @@ export function DeleteNoteButton({ deleteAction }: DeleteNoteButtonProps) {
               type="button"
               onClick={closeDialog}
               disabled={isPending}
-              className="rounded-md px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              className="rounded-md px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
             >
               Cancel
             </button>
