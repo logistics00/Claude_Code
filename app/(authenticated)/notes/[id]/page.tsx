@@ -18,8 +18,8 @@ export default async function NoteEditor({
   const { id } = await params;
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <h1 className="text-4xl font-bold">Note Editor - {id}</h1>
+    <div className="mx-auto max-w-4xl px-4 py-8">
+      <h1 className="text-2xl font-bold text-gray-900">Note Editor - {id}</h1>
     </div>
   );
 }

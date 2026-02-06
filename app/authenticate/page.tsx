@@ -20,21 +20,21 @@ function AuthForm() {
     setError("");
     setIsLoading(true);
 
-    const authFn = isSignUp ? signUp.email : signIn.email;
-
-    await authFn({
-      email,
-      password,
-      callbackURL: "/dashboard",
-    }, {
+    const options = {
       onSuccess: () => {
         router.push("/dashboard");
       },
-      onError: (ctx) => {
+      onError: (ctx: { error: { message?: string } }) => {
         setError(ctx.error.message || "Authentication failed");
         setIsLoading(false);
       },
-    });
+    };
+
+    if (isSignUp) {
+      await signUp.email({ email, password, name: email.split("@")[0] }, options);
+    } else {
+      await signIn.email({ email, password }, options);
+    }
   }
 
   return (
