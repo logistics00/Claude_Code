@@ -9,6 +9,7 @@ export function getDb(): Database {
   if (!db) {
     db = new Database(DB_PATH, { create: true });
     db.run("PRAGMA journal_mode = WAL;");
+    db.run("PRAGMA foreign_keys = ON;");
     initializeTables(db);
   }
   return db;
@@ -83,7 +84,7 @@ function initializeTables(database: Database): void {
       public_slug TEXT UNIQUE,
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       updated_at TEXT NOT NULL DEFAULT (datetime('now')),
-      FOREIGN KEY (user_id) REFERENCES user(id)
+      FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
     )
   `);
 
@@ -106,12 +107,9 @@ export function get<T>(sql: string, params?: SQLQueryBindings[]): T | undefined 
   return (params ? stmt.get(...params) : stmt.get()) as T | undefined;
 }
 
-export function run(sql: string, params?: SQLQueryBindings[]): void {
+export function run(sql: string, params?: SQLQueryBindings[]): number {
   const database = getDb();
   const stmt = database.prepare(sql);
-  if (params) {
-    stmt.run(...params);
-  } else {
-    stmt.run();
-  }
+  const result = params ? stmt.run(...params) : stmt.run();
+  return result.changes;
 }

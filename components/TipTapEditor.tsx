@@ -116,6 +116,18 @@ function Toolbar({ editor }: { editor: Editor }) {
   );
 }
 
+function safeParseJson(json: string): object {
+  try {
+    const parsed = JSON.parse(json);
+    if (typeof parsed === "object" && parsed !== null) {
+      return parsed;
+    }
+  } catch {
+    // Fall through to return empty doc
+  }
+  return { type: "doc", content: [] };
+}
+
 export function TipTapEditor({ content, onUpdate }: TipTapEditorProps) {
   const editor = useEditor({
     extensions: [
@@ -123,7 +135,7 @@ export function TipTapEditor({ content, onUpdate }: TipTapEditorProps) {
         heading: { levels: [1, 2, 3] },
       }),
     ],
-    content: content ? JSON.parse(content) : { type: "doc", content: [] },
+    content: content ? safeParseJson(content) : { type: "doc", content: [] },
     onUpdate: ({ editor }) => {
       onUpdate(JSON.stringify(editor.getJSON()));
     },
@@ -140,7 +152,7 @@ export function TipTapEditor({ content, onUpdate }: TipTapEditorProps) {
     if (editor && content) {
       const currentContent = JSON.stringify(editor.getJSON());
       if (currentContent !== content) {
-        editor.commands.setContent(JSON.parse(content));
+        editor.commands.setContent(safeParseJson(content));
       }
     }
   }, [editor, content]);

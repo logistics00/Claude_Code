@@ -1,13 +1,24 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { createNote } from "@/lib/notes";
+import { createNote, validateContentJson } from "@/lib/notes";
 import { z } from "zod";
 import { NewNoteForm } from "./NewNoteForm";
 
+const MAX_CONTENT_SIZE = 500 * 1024; // 500KB
+
 const noteSchema = z.object({
   title: z.string().min(1, "Title is required").max(200),
-  contentJson: z.string(),
+  contentJson: z
+    .string()
+    .max(MAX_CONTENT_SIZE, `Content exceeds maximum size of ${MAX_CONTENT_SIZE / 1024}KB`)
+    .refine(
+      (val) => {
+        const result = validateContentJson(val);
+        return result.valid;
+      },
+      { message: "Content must be valid JSON" }
+    ),
 });
 
 async function createNoteAction(formData: FormData) {

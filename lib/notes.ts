@@ -1,5 +1,22 @@
 import { run, get, query } from "./db";
 
+const MAX_CONTENT_SIZE = 500 * 1024; // 500KB
+
+export function validateContentJson(contentJson: string): { valid: boolean; error?: string } {
+  if (contentJson.length > MAX_CONTENT_SIZE) {
+    return { valid: false, error: `Content exceeds maximum size of ${MAX_CONTENT_SIZE / 1024}KB` };
+  }
+  try {
+    const parsed = JSON.parse(contentJson);
+    if (typeof parsed !== "object" || parsed === null) {
+      return { valid: false, error: "Content must be a valid JSON object" };
+    }
+    return { valid: true };
+  } catch {
+    return { valid: false, error: "Content is not valid JSON" };
+  }
+}
+
 export type Note = {
   id: string;
   user_id: string;
@@ -44,14 +61,14 @@ export function updateNote(
   title: string,
   contentJson: string
 ): boolean {
-  run(
+  const changes = run(
     `UPDATE notes SET title = ?, content_json = ?, updated_at = datetime('now') WHERE id = ? AND user_id = ?`,
     [title, contentJson, id, userId]
   );
-  return true;
+  return changes > 0;
 }
 
 export function deleteNote(id: string, userId: string): boolean {
-  run(`DELETE FROM notes WHERE id = ? AND user_id = ?`, [id, userId]);
-  return true;
+  const changes = run(`DELETE FROM notes WHERE id = ? AND user_id = ?`, [id, userId]);
+  return changes > 0;
 }
