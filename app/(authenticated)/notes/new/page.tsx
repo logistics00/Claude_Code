@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createNote, validateContentJson } from "@/lib/notes";
 import { z } from "zod";
-import { NewNoteForm } from "./NewNoteForm";
+import { NoteForm } from "@/components/NoteForm";
 
 const MAX_CONTENT_SIZE = 500 * 1024; // 500KB
 
@@ -48,7 +48,11 @@ export default function NewNotePage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
       <h1 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">Create New Note</h1>
-      <NewNoteForm action={createNoteAction} />
+      <NoteForm
+        action={createNoteAction}
+        submitLabel="Create Note"
+        pendingLabel="Creating..."
+      />
     </div>
   );
 }

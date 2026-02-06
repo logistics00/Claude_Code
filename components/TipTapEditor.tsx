@@ -1,7 +1,6 @@
 "use client";
 import { useEditor, EditorContent, Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { useEffect } from "react";
 
 type TipTapEditorProps = {
   content: string;
@@ -136,6 +135,7 @@ export function TipTapEditor({ content, onUpdate }: TipTapEditorProps) {
       }),
     ],
     content: content ? safeParseJson(content) : { type: "doc", content: [] },
+    immediatelyRender: false,
     onUpdate: ({ editor }) => {
       onUpdate(JSON.stringify(editor.getJSON()));
     },
@@ -147,15 +147,6 @@ export function TipTapEditor({ content, onUpdate }: TipTapEditorProps) {
       },
     },
   });
-
-  useEffect(() => {
-    if (editor && content) {
-      const currentContent = JSON.stringify(editor.getJSON());
-      if (currentContent !== content) {
-        editor.commands.setContent(safeParseJson(content));
-      }
-    }
-  }, [editor, content]);
 
   if (!editor) {
     return null;

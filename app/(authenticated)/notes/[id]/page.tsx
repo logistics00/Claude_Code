@@ -1,9 +1,10 @@
 import { headers } from "next/headers";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
-import { getNoteById } from "@/lib/notes";
+import { getNoteById, deleteNote } from "@/lib/notes";
 import { NoteRenderer } from "@/components/NoteRenderer";
+import { DeleteNoteButton } from "@/components/DeleteNoteButton";
 
 export default async function NoteViewPage({
   params,
@@ -26,15 +27,43 @@ export default async function NoteViewPage({
     notFound();
   }
 
+  async function deleteNoteAction() {
+    "use server";
+
+    const currentSession = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!currentSession) {
+      redirect("/authenticate");
+    }
+
+    const deleted = deleteNote(id, currentSession.user.id);
+    if (!deleted) {
+      return { error: "Failed to delete note" };
+    }
+
+    redirect("/dashboard");
+  }
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <div className="mb-6">
+      <div className="mb-6 flex items-center justify-between">
         <Link
           href="/dashboard"
           className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
         >
           &larr; Back to Dashboard
         </Link>
+        <div className="flex items-center gap-4">
+          <Link
+            href={`/notes/${id}/edit`}
+            className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+          >
+            Edit
+          </Link>
+          <DeleteNoteButton deleteAction={deleteNoteAction} />
+        </div>
       </div>
       <article>
         <h1 className="mb-6 text-3xl font-bold text-gray-900 dark:text-white">

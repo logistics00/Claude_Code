@@ -2,13 +2,23 @@
 import { useState } from "react";
 import { TipTapEditor } from "@/components/TipTapEditor";
 
-type NewNoteFormProps = {
+type NoteFormProps = {
   action: (formData: FormData) => Promise<{ error: string } | void>;
+  initialTitle?: string;
+  initialContent?: string;
+  submitLabel: string;
+  pendingLabel: string;
 };
 
-export function NewNoteForm({ action }: NewNoteFormProps) {
+export function NoteForm({
+  action,
+  initialTitle = "",
+  initialContent,
+  submitLabel,
+  pendingLabel,
+}: NoteFormProps) {
   const [contentJson, setContentJson] = useState(
-    JSON.stringify({ type: "doc", content: [] })
+    initialContent ?? JSON.stringify({ type: "doc", content: [] })
   );
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
@@ -47,6 +57,7 @@ export function NewNoteForm({ action }: NewNoteFormProps) {
           id="title"
           name="title"
           required
+          defaultValue={initialTitle}
           className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
           placeholder="Enter note title"
         />
@@ -63,7 +74,7 @@ export function NewNoteForm({ action }: NewNoteFormProps) {
           disabled={isPending}
           className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
         >
-          {isPending ? "Creating..." : "Create Note"}
+          {isPending ? pendingLabel : submitLabel}
         </button>
       </div>
     </form>
