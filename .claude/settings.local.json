@@ -7,7 +7,8 @@
       "Bash(bun run lint)",
       "WebSearch",
       "Bash(bun run)",
-      "Bash(bun run build:*)"
+      "Bash(bun run build:*)",
+      "Bash(bunx tsc:*)"
     ]
   }
 }
