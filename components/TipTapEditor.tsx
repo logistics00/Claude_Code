@@ -22,7 +22,7 @@ export function TipTapEditor({ content, onUpdate }: TipTapEditorProps) {
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm max-w-none min-h-[200px] focus:outline-none p-4",
+          "prose prose-sm dark:prose-invert max-w-none min-h-[200px] focus:outline-none p-4",
         "aria-label": "Note content editor",
       },
     },
@@ -38,7 +38,7 @@ export function TipTapEditor({ content, onUpdate }: TipTapEditorProps) {
   }, [editor, content]);
 
   return (
-    <div className="rounded-md border border-gray-300 bg-white">
+    <div className="rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800">
       <EditorContent editor={editor} />
     </div>
   );

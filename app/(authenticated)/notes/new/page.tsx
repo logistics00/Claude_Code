@@ -33,18 +33,10 @@ async function createNoteAction(formData: FormData) {
   redirect(`/notes/${noteId}`);
 }
 
-export default async function NewNotePage() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (!session) {
-    redirect("/authenticate");
-  }
-
+export default function NewNotePage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold text-gray-900">Create New Note</h1>
+      <h1 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">Create New Note</h1>
       <NewNoteForm action={createNoteAction} />
     </div>
   );
