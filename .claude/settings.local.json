@@ -4,7 +4,8 @@
       "Bash(bun dev)",
       "mcp__context7__resolve-library-id",
       "mcp__context7__query-docs",
-      "Bash(bun run lint)"
+      "Bash(bun run lint)",
+      "WebSearch"
     ]
   }
 }
