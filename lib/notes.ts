@@ -72,3 +72,56 @@ export function deleteNote(id: string, userId: string): boolean {
   const changes = run(`DELETE FROM notes WHERE id = ? AND user_id = ?`, [id, userId]);
   return changes > 0;
 }
+
+function generateSlug(): string {
+  const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let slug = "";
+  for (let i = 0; i < 8; i++) {
+    slug += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return slug;
+}
+
+export function toggleNoteSharing(
+  noteId: string,
+  userId: string,
+  makePublic: boolean
+): { success: boolean; slug: string | null } {
+  const note = getNoteById(noteId, userId);
+  if (!note) {
+    return { success: false, slug: null };
+  }
+
+  if (!makePublic) {
+    run(
+      `UPDATE notes SET is_public = 0, public_slug = NULL, updated_at = datetime('now') WHERE id = ? AND user_id = ?`,
+      [noteId, userId]
+    );
+    return { success: true, slug: null };
+  }
+
+  // Generate unique slug with retry on collision
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const slug = generateSlug();
+    try {
+      const changes = run(
+        `UPDATE notes SET is_public = 1, public_slug = ?, updated_at = datetime('now') WHERE id = ? AND user_id = ?`,
+        [slug, noteId, userId]
+      );
+      if (changes > 0) {
+        return { success: true, slug };
+      }
+    } catch {
+      // Slug collision, retry
+      continue;
+    }
+  }
+  return { success: false, slug: null };
+}
+
+export function getPublicNoteBySlug(slug: string): Note | undefined {
+  return get<Note>(
+    `SELECT * FROM notes WHERE public_slug = ? AND is_public = 1`,
+    [slug]
+  );
+}

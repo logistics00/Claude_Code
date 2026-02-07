@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import { getNoteById, deleteNote } from "@/lib/notes";
 import { NoteRenderer } from "@/components/NoteRenderer";
 import { DeleteNoteButton } from "@/components/DeleteNoteButton";
+import { ShareNoteButton } from "@/components/ShareNoteButton";
 
 export default async function NoteViewPage({
   params,
@@ -62,6 +63,11 @@ export default async function NoteViewPage({
           >
             Edit
           </Link>
+          <ShareNoteButton
+            noteId={id}
+            initialIsPublic={Boolean(note.is_public)}
+            initialSlug={note.public_slug}
+          />
           <DeleteNoteButton deleteAction={deleteNoteAction} />
         </div>
       </div>
