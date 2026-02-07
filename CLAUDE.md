@@ -1,20 +1,20 @@
 # CLAUDE.md
 
-We’re building the app described in @Specification_Technical.md. Read that file for general 
+We’re building the app described in @Specification_Technical.md. Read that file for general
 architectural tasks or to double-check the exact database structure, tech stack or application architecture.
 
-Keep your replies extremely concise and focus on conveying the key information. No unnecessary fluff, 
+Keep your replies extremely concise and focus on conveying the key information. No unnecessary fluff,
 claudeno long code snippets.
 
-Whenever working with any third-party library or something similar, you MUST look up the official 
-documentation to ensure that you're working with up-to-date information. 
+Whenever working with any third-party library or something similar, you MUST look up the official
+documentation to ensure that you're working with up-to-date information.
 Use the DocsExplorer subagent for efficient documentation lookup.
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
 
-A note-taking web application where authenticated users can create, view, edit, delete, and publicly 
+A note-taking web application where authenticated users can create, view, edit, delete, and publicly
 share rich-text notes. Notes use TipTap editor and are stored as JSON in SQLite.
 
 ## Commands
@@ -66,6 +66,7 @@ bun run lint     # Run ESLint
 ## Database
 
 SQLite file at `data/app.db`. Tables:
+
 - `user`, `session`, `account`, `verification` - better-auth managed
 - `notes` - App data (id, user_id, title, content_json, is_public, public_slug, timestamps)
 

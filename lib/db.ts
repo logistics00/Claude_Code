@@ -1,23 +1,23 @@
-import Database from "better-sqlite3";
-import { join } from "path";
+import Database from 'better-sqlite3';
+import { join } from 'path';
 
-const DB_PATH = join(process.cwd(), "data", "app.db");
+const DB_PATH = join(process.cwd(), 'data', 'app.db');
 
 let db: Database.Database | null = null;
 
 export function getDb(): Database.Database {
-  if (!db) {
-    db = new Database(DB_PATH);
-    db.pragma("journal_mode = WAL");
-    db.pragma("foreign_keys = ON");
-    initializeTables(db);
-  }
-  return db;
+    if (!db) {
+        db = new Database(DB_PATH);
+        db.pragma('journal_mode = WAL');
+        db.pragma('foreign_keys = ON');
+        initializeTables(db);
+    }
+    return db;
 }
 
 function initializeTables(database: Database.Database): void {
-  // better-auth core tables
-  database.exec(`
+    // better-auth core tables
+    database.exec(`
     CREATE TABLE IF NOT EXISTS user (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
@@ -29,7 +29,7 @@ function initializeTables(database: Database.Database): void {
     )
   `);
 
-  database.exec(`
+    database.exec(`
     CREATE TABLE IF NOT EXISTS session (
       id TEXT PRIMARY KEY,
       userId TEXT NOT NULL,
@@ -43,7 +43,7 @@ function initializeTables(database: Database.Database): void {
     )
   `);
 
-  database.exec(`
+    database.exec(`
     CREATE TABLE IF NOT EXISTS account (
       id TEXT PRIMARY KEY,
       userId TEXT NOT NULL,
@@ -62,7 +62,7 @@ function initializeTables(database: Database.Database): void {
     )
   `);
 
-  database.exec(`
+    database.exec(`
     CREATE TABLE IF NOT EXISTS verification (
       id TEXT PRIMARY KEY,
       identifier TEXT NOT NULL,
@@ -73,8 +73,8 @@ function initializeTables(database: Database.Database): void {
     )
   `);
 
-  // Application tables
-  database.exec(`
+    // Application tables
+    database.exec(`
     CREATE TABLE IF NOT EXISTS notes (
       id TEXT PRIMARY KEY,
       user_id TEXT NOT NULL,
@@ -88,28 +88,30 @@ function initializeTables(database: Database.Database): void {
     )
   `);
 
-  // Indexes
-  database.exec(`CREATE INDEX IF NOT EXISTS idx_notes_user_id ON notes(user_id)`);
-  database.exec(`CREATE INDEX IF NOT EXISTS idx_notes_public_slug ON notes(public_slug)`);
-  database.exec(`CREATE INDEX IF NOT EXISTS idx_notes_is_public ON notes(is_public)`);
+    // Indexes
+    database.exec(`CREATE INDEX IF NOT EXISTS idx_notes_user_id ON notes(user_id)`);
+    database.exec(
+        `CREATE INDEX IF NOT EXISTS idx_notes_public_slug ON notes(public_slug)`,
+    );
+    database.exec(`CREATE INDEX IF NOT EXISTS idx_notes_is_public ON notes(is_public)`);
 }
 
 // Query helpers
 export function query<T>(sql: string, params?: unknown[]): T[] {
-  const database = getDb();
-  const stmt = database.prepare(sql);
-  return (params ? stmt.all(...params) : stmt.all()) as T[];
+    const database = getDb();
+    const stmt = database.prepare(sql);
+    return (params ? stmt.all(...params) : stmt.all()) as T[];
 }
 
 export function get<T>(sql: string, params?: unknown[]): T | undefined {
-  const database = getDb();
-  const stmt = database.prepare(sql);
-  return (params ? stmt.get(...params) : stmt.get()) as T | undefined;
+    const database = getDb();
+    const stmt = database.prepare(sql);
+    return (params ? stmt.get(...params) : stmt.get()) as T | undefined;
 }
 
 export function run(sql: string, params?: unknown[]): number {
-  const database = getDb();
-  const stmt = database.prepare(sql);
-  const result = params ? stmt.run(...params) : stmt.run();
-  return result.changes;
+    const database = getDb();
+    const stmt = database.prepare(sql);
+    const result = params ? stmt.run(...params) : stmt.run();
+    return result.changes;
 }

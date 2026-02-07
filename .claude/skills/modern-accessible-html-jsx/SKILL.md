@@ -20,8 +20,8 @@ Accessibility is a baseline requirement, not an enhancement.
 - **PREFER** native HTML elements over ARIA whenever possible
 - **DO NOT** use ARIA to fix bad HTML semantics
 - Provide accessible names for all interactive controls
-  - Labels for inputs
-  - `aria-label` or visible text where required
+    - Labels for inputs
+    - `aria-label` or visible text where required
 
 ## Forms & Inputs
 

@@ -1,5 +1,5 @@
 ---
-name: modern-best-practice-react-components 
+name: modern-best-practice-react-components
 description: Build clean, modern React components that apply common best practices and avoid common pitfalls like unnecessary state management or useEffect usage
 ---
 
@@ -19,12 +19,12 @@ We're using modern React (19+) and we're following common best practices focused
 ## State Management
 
 - ** AVOID ** 'useEffect()
-  - See the ["You Might Not Need An Effect" guide] (references/you-dont-need-useeffect.md) for detailed guidance
-  - ** PREFER ** deriving values during render instead of synchronizing state
-  - Fetch data via TanStack Query ('@tanstack/react-query')
+    - See the ["You Might Not Need An Effect" guide] (references/you-dont-need-useeffect.md) for detailed guidance
+    - ** PREFER ** deriving values during render instead of synchronizing state
+    - Fetch data via TanStack Query ('@tanstack/react-query')
 - ** AVOID ** unnecessary `useState()` or `useReducer()' usage
-  - Derive state from props or other state when possible  Recensies
-  - Localize state to the lowest possible component
+    - Derive state from props or other state when possible Recensies
+    - Localize state to the lowest possible component
 - ** DO NOT ** mirror props in state unless absolutely necessary
 - Prefer controlled components over syncing uncontrolled state
 
@@ -38,24 +38,25 @@ We're using modern React (19+) and we're following common best practices focused
 ## Event Handling
 
 - ** AVOID ** in-line event handlers in JSX
-  - ** PREFER **:
+    - ** PREFER **:
+
+        ```tsx
+        function handleClick() {
+            // ...
+        }
+
+        <button onClick={handleClick} />;
+        ```
+
+- ** Over **:
 
     ```tsx
-    function handleClick() {
-        // ...
-    }
-
-    <button onClick={handleClick} />;
+    <button
+        onClick={() => {
+            /* ... */
+        }}
+    />
     ```
-    
-- ** Over **:
-  ```tsx
-  <button
-    onClick={() => {
-      /* ... */
-    }}
-  />
-  ```
 
 - Name handlers clearly (`handleSubmit`, `handleChange`, `handleClose`)
 - Keep handlers small; extract complex logic into helpers
@@ -63,9 +64,9 @@ We're using modern React (19+) and we're following common best practices focused
 ## Effects, Data, and Side Effects
 
 - ** AVOID ** effects for:
-  - Derived state
-  - Data transformations
-  - Event-based logic that can live in handlers
+    - Derived state
+    - Data transformations
+    - Event-based logic that can live in handlers
 - If side effects are unavoidable, keep them minimal, isolated, and well-documented
 - Prefer framework-level or external abstractions (routers, data libraries) over raw effects
 

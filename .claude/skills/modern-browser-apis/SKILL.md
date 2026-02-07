@@ -64,9 +64,9 @@ These APIs are stable, broadly implemented, and useful in everyday applications.
 ## When to Use & How to Fallback
 
 - **FEATURE DETECTION** is required before use:
-  ```js
-  if ('clipboard' in navigator) { … }
-  ```
+    ```js
+    if ('clipboard' in navigator) { … }
+    ```
 
 For APIs not universally supported (e.g., WebGPU), provide a graceful fallback (WebGL or degraded UI).
 

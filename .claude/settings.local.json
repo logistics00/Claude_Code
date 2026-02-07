@@ -1,27 +1,27 @@
 {
-  "permissions": {
-    "allow": [
-      "Bash(bun dev)",
-      "mcp__context7__resolve-library-id",
-      "mcp__context7__query-docs",
-      "Bash(bun run lint)",
-      "WebSearch",
-      "Bash(bun run)",
-      "Bash(bun run build:*)",
-      "Bash(bunx tsc:*)"
-    ]
-  },
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "cd \"$CLAUDE_PROJECT_DIR\" && bun run fmt 2>/dev/null || true"
-          }
+    "permissions": {
+        "allow": [
+            "Bash(bun dev)",
+            "mcp__context7__resolve-library-id",
+            "mcp__context7__query-docs",
+            "Bash(bun run lint)",
+            "WebSearch",
+            "Bash(bun run)",
+            "Bash(bun run build:*)",
+            "Bash(bunx tsc:*)"
         ]
-      }
-    ]
-  }
+    },
+    "hooks": {
+        "PostToolUse": [
+            {
+                "matcher": "Edit|Write",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "cd \"$CLAUDE_PROJECT_DIR\" && bun run fmt 2>/dev/null || true"
+                    }
+                ]
+            }
+        ]
+    }
 }
