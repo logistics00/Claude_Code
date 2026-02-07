@@ -10,5 +10,18 @@
       "Bash(bun run build:*)",
       "Bash(bunx tsc:*)"
     ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && bun run fmt 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
   }
 }
