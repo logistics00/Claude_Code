@@ -1,27 +1,40 @@
 {
-    "permissions": {
-        "allow": [
-            "Bash(bun dev)",
-            "mcp__context7__resolve-library-id",
-            "mcp__context7__query-docs",
-            "Bash(bun run lint)",
-            "WebSearch",
-            "Bash(bun run)",
-            "Bash(bun run build:*)",
-            "Bash(bunx tsc:*)"
+  "permissions": {
+    "allow": [
+      "Bash(bun dev)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "Bash(bun run lint)",
+      "WebSearch",
+      "Bash(bun run)",
+      "Bash(bun run build:*)",
+      "Bash(bunx tsc:*)",
+      "Bash(bun run dev)",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_snapshot",
+      "mcp__plugin_playwright_playwright__browser_console_messages",
+      "mcp__plugin_playwright_playwright__browser_click",
+      "mcp__plugin_playwright_playwright__browser_wait_for",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_close",
+      "Bash(curl:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(timeout:*)",
+      "mcp__plugin_playwright_playwright__browser_fill_form"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && bun run fmt 2>/dev/null || true"
+          }
         ]
-    },
-    "hooks": {
-        "PostToolUse": [
-            {
-                "matcher": "Edit|Write",
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "cd \"$CLAUDE_PROJECT_DIR\" && bun run fmt 2>/dev/null || true"
-                    }
-                ]
-            }
-        ]
-    }
+      }
+    ]
+  }
 }

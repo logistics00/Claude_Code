@@ -115,3 +115,10 @@ export function run(sql: string, params?: unknown[]): number {
     const result = params ? stmt.run(...params) : stmt.run();
     return result.changes;
 }
+
+export function resetDb(): void {
+    if (db) {
+        db.close();
+        db = null;
+    }
+}
